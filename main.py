@@ -10,6 +10,7 @@ from modals.modals import URL, ResponseModel, User, CreateShortURLPayload, Signu
 from authlib.integrations.requests_client import OAuth2Session
 from authlib.integrations.starlette_client import OAuth
 from starlette.middleware.sessions import SessionMiddleware
+from fastapi.middleware.cors import CORSMiddleware
 
 
 from provider.github import CLIENT_ID, CLIENT_SECRET, REDIRECT_URI
@@ -17,6 +18,17 @@ from provider.github import CLIENT_ID, CLIENT_SECRET, REDIRECT_URI
 
 app = FastAPI()
 app.add_middleware(SessionMiddleware, secret_key="ablackcat")
+
+# ============Enable CORS============================
+origins = ['*']
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # MongoDB connection
 client = MongoClient(
